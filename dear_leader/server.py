@@ -5,7 +5,7 @@ from __future__ import print_function
 import os
 from flask import Flask
 from dear_leader.home import web_api
-from dear_leader.oath import oauth_api
+from dear_leader.oauth import oauth_api
 from dear_leader.alexa import ask_api
 
 

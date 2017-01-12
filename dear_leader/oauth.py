@@ -14,7 +14,7 @@ TWITTER = OAuth().remote_app(
     access_token_url='https://api.twitter.com/oauth/access_token',
     authorize_url='https://api.twitter.com/oauth/authorize'
 )
-oauth_api = Blueprint('oath_api', __name__)
+oauth_api = Blueprint('oauth_api', __name__)
 logger = logging.getLogger(oauth_api.name)
 
 
@@ -43,7 +43,7 @@ def authorize():
         session['state'] = state
 
         if client_id == CLIENT_ID:
-            callback_url = url_for('oath_api.oauth_callback', next=redirect_uri)
+            callback_url = url_for('oauth_api.oauth_callback', next=redirect_uri)
             return TWITTER.authorize(callback=callback_url)
         else:
             logger.info('bad client_id')
