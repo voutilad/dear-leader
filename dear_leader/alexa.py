@@ -1,7 +1,8 @@
 from __future__ import print_function
 import logging
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, session
 from flask_ask import Ask, question, statement
+from dear_leader import leaders
 
 
 ask_api = Blueprint('ask_api', __name__)
@@ -11,4 +12,5 @@ ask = Ask(blueprint=ask_api)
 
 @ask.launch
 def welcome():
-    return statement(render_template("welcome"))
+    return question(render_template("welcome"))\
+        .reprompt(render_template('pick_a_leader', leaders=leaders.accounts.keys()))

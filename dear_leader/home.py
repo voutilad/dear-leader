@@ -13,4 +13,4 @@ def home():
     Redirect to our project page for now.
     :return: redirect to github
     """
-    return redirect('https://github.com/voutilad/alexa-trump')
+    return redirect('https://github.com/voutilad/dear-leader')

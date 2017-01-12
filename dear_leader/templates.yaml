@@ -1,5 +1,10 @@
 welcome: |
-  "Hey man!"
+  Our Dear Leader welcomes you!
+  Which Dear Leader do you follow?
+  {% include 'pick_a_leader' %}
+
+pick_a_leader: |
+  You can say any of the following: {{ leaders }}
 
 bye: |
   "Bye."

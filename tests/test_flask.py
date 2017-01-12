@@ -17,7 +17,7 @@ def test_if_get_to_index_redirects_to_github():
     response = client.get('/', follow_redirects=False)
     assert response is not None
     assert response.status_code == 302
-    assert response.location == 'https://github.com/voutilad/alexa-trump'
+    assert response.location == 'https://github.com/voutilad/dear-leader'
 
 
 def test_bad_client_id_results_in_403():
@@ -42,8 +42,10 @@ def test_redirect_to_twitter_oauth():
 
 def test_json_response_from_alexa():
     data = open(os.path.join(os.path.dirname(__file__), 'fixtures/launch-intent.json'), 'r').read()
-    response = client.post('/ask/', data=data)
+    response = client.post('/ask', data=data)
 
     assert response is not None
     assert response.status_code == 200
-    assert b'hey man' in response.data
+    assert b'Our Dear Leader welcomes you!' in response.data
+    assert b'You can say any of the following' in response.data
+    assert b'President' in response.data

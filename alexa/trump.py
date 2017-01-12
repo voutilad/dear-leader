@@ -26,7 +26,8 @@ def get_random_tweet(session, screen_name='realDonaldTrump'):
                                    exclude_replies=True,
                                    count=100)
 
-    tweet = timeline[random.randint(0, len(timeline))]
+    index = random.randint(0, len(timeline)-1)
+    tweet = timeline[index]
     return tweet.text
 
 def build_speechlet_response(output, card_title='Donald Trump said...',
