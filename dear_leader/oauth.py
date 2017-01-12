@@ -1,21 +1,29 @@
 from __future__ import print_function
 import logging
 import os
-from flask import Blueprint, url_for, request, redirect, session, abort
+from flask import Blueprint, url_for, request, redirect, session, abort, current_app
 from flask_oauthlib.client import OAuth
 from dear_leader.settings import CLIENT_ID
 
-TWITTER = OAuth().remote_app(
-    'twitter',
-    consumer_key=os.environ['TWITTER_CONSUMER_KEY'],
-    consumer_secret=os.environ['TWITTER_CONSUMER_SECRET'],
-    base_url='https://api.twitter.com/1.1/',
-    request_token_url='https://api.twitter.com/oauth/request_token',
-    access_token_url='https://api.twitter.com/oauth/access_token',
-    authorize_url='https://api.twitter.com/oauth/authorize'
-)
 oauth_api = Blueprint('oauth_api', __name__)
 logger = logging.getLogger(oauth_api.name)
+
+
+def get_oauth_client(app):
+    if hasattr(app, 'oauth_client'):
+        return app.oauth_client
+    else:
+        client = OAuth(app).remote_app(
+            'twitter',
+            consumer_key=os.environ['TWITTER_CONSUMER_KEY'],
+            consumer_secret=os.environ['TWITTER_CONSUMER_SECRET'],
+            base_url='https://api.twitter.com/1.1/',
+            request_token_url='https://api.twitter.com/oauth/request_token',
+            access_token_url='https://api.twitter.com/oauth/access_token',
+            authorize_url='https://api.twitter.com/oauth/authorize')
+        app.oauth_client = client
+        return client
+    return None
 
 
 @oauth_api.route('/authorize')
@@ -44,7 +52,7 @@ def authorize():
 
         if client_id == CLIENT_ID:
             callback_url = url_for('oauth_api.oauth_callback', next=redirect_uri)
-            return TWITTER.authorize(callback=callback_url)
+            return get_oauth_client(current_app).authorize(callback=callback_url)
         else:
             logger.info('bad client_id')
             abort(403)
@@ -55,7 +63,7 @@ def authorize():
 
 @oauth_api.route('/callback')
 def oauth_callback():
-    resp = TWITTER.authorized_response()
+    resp = get_oauth_client(current_app).authorized_response()
     token = str(resp['oauth_token']) + ',' + str(resp['oauth_token_secret'])
     token_type = 'Bearer'
 
@@ -66,5 +74,5 @@ def oauth_callback():
         logger.debug('next_url=' + str(next_url))
         return redirect(next_url)
     else:
-        logger.info('Failed ot authorize')
+        logger.info('Failed to authorize')
         return 'Failed to authorize :-('
