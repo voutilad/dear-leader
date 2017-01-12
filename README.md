@@ -1,29 +1,20 @@
 ![The Donald](./Trump 108x108.png)
-# Trump's Twitter
+# Dear Leader's Twitter
 Alexa skill for hearing random Trump tweets!
 
 Ask Alexa:
-* `Alexa, open Trump's Twitter.`
-* `Alexa, open Trump's Twitter and read a random tweet.`
+* `Alexa, open Our Dear Leader's Twitter.`
 
 Etc.
 
 Sample Audio:
- * [Alexa.mp3](https://github.com/voutilad/alexa-trump/blob/master/Alexa.mp3?raw=true)
- * [Alexa and Trump Sample.m4a](https://github.com/voutilad/alexa-trump/blob/master/Alexa%20and%20Trump%20Sample.m4a?raw=true)
+ * 
+ 
+# About this Project
+This originally began life as a Trump-specific skill to entertain me by reading 
+his twitter account on demand. Amazon, however, rejected said skill for IP 
+reasons. Wicked lame.
 
-## Lambda
-This is the core skill logic to put in Amazon Lambda based on some boilerplate
-from Amazon. It talks to Twitter via their API to fetch tweets and handles
-using the Alexa SDK.
-
-## Server
-This is a Flask app for deployment to Heroku for brokering account linking
-between Alexa and Twitter using OAuth. This is so stupid. Seriously. It's
-just a proxy to facilitate OAuth.
-
-Technically, you could merge both projects into one web app and host in one
-location...but using Lambda & Heroku keeps it dirt cheap $$$.
 
 
 # License!
