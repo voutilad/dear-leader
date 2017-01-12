@@ -1,6 +1,6 @@
 from __future__ import print_function
 import logging
-from flask import Blueprint
+from flask import Blueprint, render_template
 from flask_ask import Ask, question, statement
 
 
@@ -11,4 +11,4 @@ ask = Ask(blueprint=ask_api)
 
 @ask.launch
 def welcome():
-    return statement('hey man')
+    return statement(render_template("welcome"))
