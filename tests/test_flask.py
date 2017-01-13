@@ -84,10 +84,8 @@ def test_account_linking_message():
 
 
 def test_session_end():
-    response = client.post('/ask', data=_load_intent('launch-intent.json'))
+    response = client.post('/ask', data=_load_intent('end-intent.json'))
 
     assert response is not None and response.status_code == 200
-    assert b'Our Dear Leader welcomes you!' in response.data
-    assert b'You can choose from' in response.data
-    assert b'Trump' in response.data
-    assert b'Putin' in response.data
+    assert b'adieu' in response.data
+    assert b'"shouldEndSession": true' in response.data

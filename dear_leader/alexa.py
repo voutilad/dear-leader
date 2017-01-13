@@ -26,7 +26,7 @@ def _is_linked(session):
 @ask.launch
 def welcome():
     if _is_linked(ask_session):
-        return question(render_template("welcome"))\
+        return question(render_template("welcome", leaders=accounts.keys()))\
             .reprompt(render_template('pick_a_leader', leaders=accounts.keys()))
     return statement(render_template('not_linked'))
 
