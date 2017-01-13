@@ -1,8 +1,8 @@
 """
 Tests for Alexa Intents using Flask-Ask
 """
-
-from dear_leader import alexa, server, leaders
+from dear_leader import alexa, server, settings
+from unittest import mock
 
 app = server.create_app()
 
@@ -37,9 +37,19 @@ def test_welcome():
         reprompt_text = reprompt_from_statement(statement)
         assert "You can say any of the following" in reprompt_text
 
-        for leader in leaders.accounts:
+        for leader in settings.accounts:
             assert leader in reprompt_text
 
 
+@mock.patch('dear_leader.alexa.get_random_tweet')
+def test_get_new_tweet(mock):
+    """
+
+    :return:
+    """
+    mock.return_value = 'hey'
+    with app.test_request_context():
+        statement = alexa.get_new_tweet()
+        assert statement is not None
 
 

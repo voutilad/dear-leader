@@ -2,8 +2,10 @@
 Test the interaction and statefulness
 """
 import os
+from unittest.mock import patch
 from dear_leader.server import create_app
 from dear_leader.settings import CLIENT_ID
+
 
 app = create_app()
 app.config['TESTING'] = True
@@ -49,3 +51,13 @@ def test_json_response_from_alexa():
     assert b'Our Dear Leader welcomes you!' in response.data
     assert b'You can say any of the following' in response.data
     assert b'President' in response.data
+
+
+@patch('dear_leader.alexa.get_random_tweet', return_value="hey now!")
+def test_getting_new_tweet(mock):
+    data = open(os.path.join(os.path.dirname(__file__), 'fixtures/GetNewTweet-intent.json'), 'r').read()
+    response = client.post('/ask', data=data)
+
+    assert response is not None
+    assert response.status_code == 200
+    assert b'Our Dear Leader said: \\"hey now!\\"' in response.data

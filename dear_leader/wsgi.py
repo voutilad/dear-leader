@@ -1,5 +1,5 @@
 """
-Entry-point for WSGI applications
+Entry-point for WSGI servers
 """
 import logging
 import os
