@@ -3,8 +3,23 @@ welcome: |
   Which Dear Leader do you follow?
   {% include 'pick_a_leader' %}
 
+not_linked: |
+  Please configure account linking within the Amazon Alexa app.
+
 pick_a_leader: |
-  You can say any of the following: {{ leaders }}
+  You can choose from any of the following Dear Leaders: {{ leaders | join( ' or ') }}
+
+leader_set: |
+  You are now following: {{ leader }}.
+
+read_tweet: |
+  Our Dear Leader, {{ leader }}, said: {{ tweet }}
+  {% include 'another' %}
+
+unsupported: |
+  Sorry, but that leader is unsupported.
+
+another: Would you like to hear another?
 
 bye: |
-  "Bye."
+  "Your Dear Leader bids you adieu."

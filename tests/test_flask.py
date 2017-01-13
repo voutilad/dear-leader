@@ -12,6 +12,17 @@ app.config['TESTING'] = True
 client = app.test_client()
 
 
+def _load_intent(intent_filename):
+    """
+    Load a fixture file with a sample intent
+    :param intent_filename: filename of the intent to load, from within the
+    fixtures directory
+    :return: String of fixture file contents
+    """
+    path = os.path.join(os.path.dirname(__file__), 'fixtures/' + intent_filename)
+    return open(path, 'r').read()
+
+
 def test_if_get_to_index_redirects_to_github():
     """
     Make sure we send requests to our home/index page to Github.
@@ -43,21 +54,40 @@ def test_redirect_to_twitter_oauth():
 
 
 def test_json_response_from_alexa():
-    data = open(os.path.join(os.path.dirname(__file__), 'fixtures/launch-intent.json'), 'r').read()
-    response = client.post('/ask', data=data)
+    response = client.post('/ask', data=_load_intent('launch-intent.json'))
 
-    assert response is not None
-    assert response.status_code == 200
+    assert response is not None and response.status_code == 200
     assert b'Our Dear Leader welcomes you!' in response.data
-    assert b'You can say any of the following' in response.data
-    assert b'President' in response.data
+    assert b'You can choose from' in response.data
+    assert b'Trump' in response.data
+    assert b'Putin' in response.data
 
 
 @patch('dear_leader.alexa.get_random_tweet', return_value="hey now!")
 def test_getting_new_tweet(mock):
-    data = open(os.path.join(os.path.dirname(__file__), 'fixtures/GetNewTweet-intent.json'), 'r').read()
-    response = client.post('/ask', data=data)
+    response = client.post('/ask', data=_load_intent('GetNewTweet-intent.json'))
 
-    assert response is not None
-    assert response.status_code == 200
-    assert b'Our Dear Leader said: \\"hey now!\\"' in response.data
+    assert response is not None and response.status_code == 200
+    assert b'Our Dear Leader, Donald Trump, said: hey now!' in response.data
+    assert b'Would you like to hear another?' in response.data
+
+
+def test_account_linking_message():
+    """
+    Make sure we prompt the user for account linking if they don't have a token yet.
+    """
+    response = client.post('/ask', data=_load_intent('launch-without-link-intent.json'))
+
+    assert response is not None and response.status_code == 200
+    assert b'Please configure account linking within the Amazon Alexa app.' in response.data
+    assert b'"shouldEndSession": true' in response.data
+
+
+def test_session_end():
+    response = client.post('/ask', data=_load_intent('launch-intent.json'))
+
+    assert response is not None and response.status_code == 200
+    assert b'Our Dear Leader welcomes you!' in response.data
+    assert b'You can choose from' in response.data
+    assert b'Trump' in response.data
+    assert b'Putin' in response.data

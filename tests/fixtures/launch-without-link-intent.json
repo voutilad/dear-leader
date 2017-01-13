@@ -1,17 +1,14 @@
 {
   "version": "1.0",
   "session": {
-    "new": false,
+    "new": true,
     "sessionId": "amzn1.echo-api.session.0000000-0000-0000-0000-00000000000",
     "application": {
       "applicationId": "amzn1.echo-sdk-ams.app.000000-d0ed-0000-ad00-000000d00ebe"
     },
-    "attributes": {
-      "LEADER": "Donald Trump"
-    },
+    "attributes": {},
     "user": {
-      "userId": "amzn1.account.AM3B00000000000000000000000",
-      "accessToken": "token,secret"
+      "userId": "amzn1.account.AM3B00000000000000000000000"
     }
   },
   "context": {
@@ -20,8 +17,7 @@
         "applicationId": "amzn1.echo-sdk-ams.app.000000-d0ed-0000-ad00-000000d00ebe"
       },
       "user": {
-        "userId": "amzn1.account.AM3B00000000000000000000000",
-        "accessToken": "token,secret"
+        "userId": "amzn1.account.AM3B00000000000000000000000"
       },
       "device": {
         "supportedInterfaces": {
@@ -35,13 +31,9 @@
     }
   },
   "request": {
-    "type": "IntentRequest",
-    "requestId": " amzn1.echo-api.request.0000000-0000-0000-0000-00000000000",
+    "type": "LaunchRequest",
+    "requestId": "amzn1.echo-api.request.0000000-0000-0000-0000-00000000000",
     "timestamp": "2015-05-13T12:34:56Z",
-    "locale": "string",
-    "intent": {
-      "name": "GetNewTweet",
-      "slots": {}
-    }
+    "locale": "string"
   }
 }

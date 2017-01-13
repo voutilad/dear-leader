@@ -4,6 +4,15 @@
       "intent": "GetNewTweet"
     },
     {
+      "intent": "SelectDearLeader",
+      "slots": [
+        {
+          "name": "Leader",
+          "type": "LIST_OF_LEADERS"
+        }
+      ]
+    },
+    {
       "intent": "AMAZON.HelpIntent"
     }
   ]

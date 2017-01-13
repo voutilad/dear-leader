@@ -3,6 +3,7 @@ Tests for Alexa Intents using Flask-Ask
 """
 from dear_leader import alexa, server, settings
 from unittest import mock
+import pytest
 
 app = server.create_app()
 
@@ -24,7 +25,9 @@ def has_reprompt(statement):
     return 'reprompt' in statement._response
 
 
-def test_welcome():
+@pytest.mark.skip
+@mock.patch('dear_leader.alexa._is_linked', return_value=True)
+def test_welcome_when_linked(mock):
     """
     Are we prompted to setup our skill on first welcome?
     """
@@ -41,15 +44,21 @@ def test_welcome():
             assert leader in reprompt_text
 
 
-@mock.patch('dear_leader.alexa.get_random_tweet')
+@pytest.mark.skip
+@mock.patch('dear_leader.alexa.get_random_tweet', return_value='hey')
 def test_get_new_tweet(mock):
     """
-
-    :return:
+    test getting a new tweet
     """
-    mock.return_value = 'hey'
     with app.test_request_context():
+        # no slot filled
+        question = alexa.get_new_tweet()
+        assert question is not None
+        assert 'You have not declared your Dear Leader' in text_from_statement(question)
+
+        # slot filled
         statement = alexa.get_new_tweet()
         assert statement is not None
+        assert 'The President of the United States said' in text_from_statement(statement)
 
 
